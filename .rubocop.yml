@@ -1,0 +1,58 @@
+# For a full list of configuration options and defaults, see Rubocop's
+# annotated default configuration file at
+# https://github.com/bbatsov/rubocop/blob/master/config/default.yml
+
+AllCops:
+
+  # Exclude automatically generated files.
+  Exclude:
+    - db/schema.rb
+    - bin/**/*
+    - script/**/*
+
+  # Run Rails-specific cops. Remove this line if you want to use Rubocop in a
+  # non-Rails project.
+  RunRailsCops: true
+
+Style/CollectionMethods:
+  # Mapping from undesired method to desired_method
+  # e.g. to use `detect` over `find`:
+  #
+  # CollectionMethods:
+  #   PreferredMethods:
+  #     find: detect
+  PreferredMethods:
+    collect: 'map'
+    collect!: 'map!'
+    inject: 'inject'
+    detect: 'find'
+    find_all: 'select'
+
+# Force strings to single quotes unless there is a reason to use double quotes
+# (such as interpolation or escaping).
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+# Use UTF-8 as the source file encoding.
+Style/Encoding:
+  Enabled: true
+
+# Avoid inline comments.
+Style/InlineComment:
+  Enabled: true
+
+# Avoid chaining a method call on a do...end block.
+Style/MethodCalledOnDoEndBlock:
+  Enabled: true
+
+# Use %i or %I for arrays of symbols
+Style/SymbolArray:
+  Enabled: true
+
+# Require documentation of classes and modules, but not for Rails
+# controllers or modules in unit tests.
+Style/Documentation:
+  Exclude:
+    - app/controllers/**/*
+    - spec/**/*_spec.rb
+    - test/**/*_test.rb
