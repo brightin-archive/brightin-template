@@ -21,6 +21,7 @@ Style/CollectionMethods:
   # CollectionMethods:
   #   PreferredMethods:
   #     find: detect
+  Enabled: true
   PreferredMethods:
     collect: 'map'
     collect!: 'map!'
@@ -33,9 +34,16 @@ Style/CollectionMethods:
 Style/StringLiterals:
   EnforcedStyle: single_quotes
 
-# Use UTF-8 as the source file encoding.
-Style/Encoding:
-  Enabled: true
+# Use UTF-8 as the source file encoding. Use `when_needed` style to only
+# require a special comment at the top of the file when non-ascii characters
+# are present in the file.
+#
+# Note: this setting only makes sense when you need to support Ruby versions
+# prior to 2.0, since UTF-8 is the default since Ruby 2.
+#
+# Style/Encoding:
+#   Enabled: true
+#   EnforcedStyle: when_needed
 
 # Avoid inline comments.
 Style/InlineComment:
@@ -50,9 +58,17 @@ Style/SymbolArray:
   Enabled: true
 
 # Require documentation of classes and modules, but not for Rails
-# controllers or modules in unit tests.
+# controllers, serializers or modules in unit tests.
 Style/Documentation:
   Exclude:
     - app/controllers/**/*
+    - app/serializers/**/*
+    - app/helpers/application_helper.rb
+    - config/application.rb
     - spec/**/*_spec.rb
     - test/**/*_test.rb
+
+# Consider `method *args` ambiguous and require `method(*args)`. The former is
+# fine so disable this rule by default.
+Lint/AmbiguousOperator:
+  Enabled: false
