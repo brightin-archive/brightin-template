@@ -4,6 +4,8 @@ This repository contains configuration files and installation instructions for
 including common linting tools in projects. Copy these into your projects and
 use pull requests to propose changes.
 
+Do you disagree with anything in this repo? Want to discuss something? Open an issue or submit a pull request!
+
 ## Wish list
 
 * Jslint
