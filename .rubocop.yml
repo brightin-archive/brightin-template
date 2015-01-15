@@ -45,10 +45,6 @@ Style/StringLiterals:
 #   Enabled: true
 #   EnforcedStyle: when_needed
 
-# Avoid inline comments.
-Style/InlineComment:
-  Enabled: true
-
 # Avoid chaining a method call on a do...end block.
 Style/MethodCalledOnDoEndBlock:
   Enabled: true
@@ -72,3 +68,32 @@ Style/Documentation:
 # fine so disable this rule by default.
 Lint/AmbiguousOperator:
   Enabled: false
+
+# We are all responsible adults. We know when we mean to write `if a = 5` and when
+# we mean to write `if a == 5`.
+Lint/AssignmentInCondition:
+  Enabled: false
+
+# Prefer alias_method over alias. Disable because alias is fine.
+Style/Alias:
+  Enabled: false
+
+# Disallow the case equality operator (===). Disable because this is a useful and
+# perfectly acceptable practice.
+Style/CaseEquality:
+  Enabled: false
+
+# Ensure multi-line blocks use `do/end` and single-line blocks use `{/}` as
+# delimiters. This is fine rule, except in case of RSpec tests, where the
+# `expect { ... }.to` is idiomatically written across multiple lines. Disable
+# only in specs.
+Style/Blocks:
+  Exclude:
+    - spec/**/*_spec.rb
+
+# Ensure short conditionals are written on a single line. The only exception
+# here is Rails initializers, which sometimes have entire blocks of code with a
+# `if defined?` modifier, which is acceptable.
+Style/IfUnlessModifier:
+  Exclude:
+    - 'config/initializers/*'
