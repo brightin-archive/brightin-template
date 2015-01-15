@@ -97,8 +97,19 @@ Include Rubocop in your Gemfile:
 Optionally install the Rake task to run RuboCop by copying `rubocop.rake` into
 your Rails tasks directory (`lib/tasks`).
 
-Finally, create a configuration file in the root of your project. You can use
-`.rubocop.yml` as a template.
+Finally, create a configuration file in the root of your project. You can simply
+copy this repo's `./.rubocop.yml` into your project directory and modify it as
+you see fit. The preferred way, however, is to create a custom, empty
+configuration file in your project and _inherit_ settings from this file:
+
+1. Copy this repo's `./.rubocop.yml` into your project as
+   `./.rubocop_defaults.yml`.
+2. Create a new `./.rubocop.yml` in your project.
+3. Add the line `inherit_from: .rubocop_defaults.yml` to your `./.rubocop.yml`
+   file.
+
+You can now add more rules and customizations in your own file, and keep the
+defaults in sync with the canonical style guide.
 
 ### Usage
 
