@@ -45,9 +45,6 @@
         "value": 1,
         "level": "error"
     },
-    "no_backticks": {
-        "level": "error"
-    },
     "no_debugger": {
         "level": "error"
     },
