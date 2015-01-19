@@ -93,6 +93,7 @@ special `.rubocop.yml` file in the root of your project.
 Include Rubocop in your Gemfile:
 
     gem 'rubocop', group: 'development'
+    gem 'rubocop-rspec', group: 'development'
 
 Optionally install the Rake task to run RuboCop by copying `rubocop.rake` into
 your Rails tasks directory (`lib/tasks`).
