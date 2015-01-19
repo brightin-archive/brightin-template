@@ -1,3 +1,7 @@
+# Include additional cops for linting RSpec specs. Make sure you have the
+# `rubocop-rspec` gem installed.
+require: rubocop-rspec
+
 # For a full list of configuration options and defaults, see Rubocop's
 # annotated default configuration file at
 # https://github.com/bbatsov/rubocop/blob/master/config/default.yml
@@ -97,3 +101,12 @@ Style/Blocks:
 Style/IfUnlessModifier:
   Exclude:
     - 'config/initializers/*'
+
+# The top-level `describe` call should reference a class or module that is
+# under test. This is not the case in some kinds of integration tests that are
+# not tied to a particular class or module. Disable this cop in those cases.
+RSpec/DescribeClass:
+  Exclude:
+    - spec/requests/**/*
+    - spec/features/**/*
+    - spec/views/**/*
