@@ -1,5 +1,49 @@
 # Brightin style guide
 
+## Brakeman
+
+[Brakeman][] is a static analysis tool that checks for common security
+vulnerabilities in Ruby on Rails projects.
+
+### Installation
+
+Include Brakeman in your Gemfile:
+
+    gem 'brakeman', group: 'development', require: false
+
+Optionally install the Rake task to run Brakeman by copying `brakeman.rake` into
+your Rails tasks directory (`lib/tasks`).
+
+### Usage
+
+You can run Brakeman using its own executable:
+
+    % brakeman
+
+Or use this repository's Rake task:
+
+    % rake brakeman
+
+See `brakeman.rake` for an example. A Rake task is nice to include as a
+dependency for a single `ci` task to run all tests on a continuous integration
+server:
+
+    # lib/tasks/ci.rake
+    task ci: %i(spec cucumber brakeman)
+
+### Configuration
+
+Brakeman mostly works out-of-the-box, but if you have any particular
+vulnerabilities you would like to ignore, you can create an ignore file. By
+default, Brakeman looks for a `config/brakeman.ignore` file, but you can also
+explicitly point to your own path. **Tip** the included Rake task will have
+Brakeman look for a `./.brakeman` file instead.
+
+Refer to the Brakeman documentation on how to create and manage an ignore file.
+As per this writing, the gist of it is to run:
+
+    % brakeman -I
+
 ## Rubocop
 
 [Rubocop][] checks Ruby code on style and metrics. It is configured using a
