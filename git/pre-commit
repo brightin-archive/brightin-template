@@ -1,4 +1,12 @@
 #!/bin/sh
+#
+# Git pre-commit hook to keep you from shooting yourself in the foot by testing
+# for common mistakes and errors.
+#
+# Installation:
+#
+# 1. Copy this file into your Git hooks directory (i.e. ./.git/hooks).
+# 2. Make it executable: chmod +x .git/hooks/pre-commit
 
 set -e
 
