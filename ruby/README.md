@@ -1,5 +1,44 @@
 # Brightin style guide
 
+## Reek
+
+[Reek][] is a tool that examines Ruby classes, modules and methods and reports any
+code smells it finds.
+
+### Installation
+
+Include Reek in your Gemfile:
+
+    gem 'reek', group: 'development', require: false
+
+Optionally install the Rake task to run Reek by copying `reek.rake` into your
+Rails tasks directory (`lib/tasks`).
+
+### Usage
+
+You can run Reek using its own executable:
+
+    % reek
+
+Or use this repository's Rake task:
+
+    % rake reek
+
+See `reek.rake` for an example. A Rake task is nice to include as a
+dependency for a single `ci` task to run all tests on a continuous integration
+server:
+
+    # lib/tasks/ci.rake
+    task ci: %i(spec cucumber brakeman)
+
+### Configuration
+
+Reek will look for a `.reek` file in your current directory, or ascend up the
+directory tree up to your home directory. You can pass an explicit filename to
+`reek` if you want to (see `reek -h` for options). The Rake task in this
+repository will have Reek look for a `.reek.yml` file, in line with RuboCop's
+`.rubocop.yml`.
+
 ## Brakeman
 
 [Brakeman][] is a static analysis tool that checks for common security
@@ -99,4 +138,4 @@ configuration][rubocop-defaults].
 
 [Rubocop]: https://github.com/bbatsov/rubocop
 [rubocop-defaults]: https://github.com/bbatsov/rubocop/blob/master/config/default.yml
-[coffeelint]: http://www.coffeelint.org
+[Reek]: https://github.com/troessner/reek

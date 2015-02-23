@@ -1,0 +1,20 @@
+# For a full list of available options and defaults, see Reek's
+# default configuration:
+#
+# https://github.com/troessner/reek/blob/795c8cb040280cbf68b16b3d01555cabfd1dd773/config/defaults.reek
+---
+
+# Do not complain about nested iterators; more often than not there's nothing
+# wrong with nested blocks.
+NestedIterators:
+  enabled: false
+
+# Calling the same method many times is bad, but up to three times is fine.
+DuplicateMethodCall:
+  max_calls: 3
+
+# Refactoring would have you create many small methods for the sake of naming
+# things, even if those methods do not necessarily depend on internal state of
+# an object. Following this rule would do more harm than good.
+UtilityFunction:
+  enabled: false
