@@ -91,7 +91,7 @@ Style/CaseEquality:
 # delimiters. This is fine rule, except in case of RSpec tests, where the
 # `expect { ... }.to` is idiomatically written across multiple lines. Disable
 # only in specs.
-Style/Blocks:
+Style/BlockDelimiters:
   Exclude:
     - spec/**/*_spec.rb
 
