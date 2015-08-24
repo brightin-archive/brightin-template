@@ -33,8 +33,8 @@ See the top-level directories in this repository for more information.
 
 * Jslint
 * Jshint
-* Reek
 * Rails best practices
+* Ruby-lint
 
 ## Credits
 
