@@ -102,6 +102,10 @@ Style/IfUnlessModifier:
   Exclude:
     - 'config/initializers/*'
 
+# Ensure indented style is used for multiline operations, not aligned style.
+Style/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
 # The top-level `describe` call should reference a class or module that is
 # under test. This is not the case in some kinds of integration tests that are
 # not tied to a particular class or module. Disable this cop in those cases.
