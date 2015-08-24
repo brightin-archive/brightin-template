@@ -29,6 +29,14 @@ tests your code using these tools, and whatever else you can automate.
 
 See the top-level directories in this repository for more information.
 
+## Installation
+
+You can copy files to your own liking, or use the generator script provided to
+copy relevant files to your project directory. Clone this repo and run the
+generator to see available options:
+
+    /path/to/styleguide/styleguide -h
+
 ## Wish list
 
 * Jslint
