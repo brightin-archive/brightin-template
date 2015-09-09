@@ -22,6 +22,9 @@ tests your code using these tools, and whatever else you can automate.
 
 * Ruby
     - Rubocop
+    - Reek
+    - Brakeman
+    - bundler-audit
 * Coffee script
     - coffeelint
 * Git
