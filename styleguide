@@ -1,0 +1,256 @@
+#!/usr/bin/env ruby
+#
+# Thor generator for installing styleguide scripts and configurations into
+# a project directory. A recent-enough version of Bundler is required for
+# the inline Gemfile to work correctly.
+
+require 'bundler/inline'
+gemfile do
+  source 'https://rubygems.org'
+  gem 'thor'
+end
+
+module Styleguide
+  module Helpers
+    def self.included(base)
+      super
+      base.send :include, Thor::Actions
+      def base.source_root
+        __dir__
+      end
+    end
+
+    private
+
+    def npm?
+      File.exist?('package.json')
+    end
+
+    def bundler?
+      File.exist?('Gemfile')
+    end
+
+    def rake?
+      File.exist?('Rakefile')
+    end
+
+    def file_contains?(path, str)
+      File.foreach(path).any? { |line| line[str] }
+    end
+  end
+
+  class Rubocop < Thor::Group
+    include Helpers
+
+    class_option :rake_task, default: true, type: :boolean, desc: 'Whether to create a Rake task'
+    class_option :defaults, default: true, type: :boolean, desc: 'Whether to import the default configuration'
+
+    def add_required_gems_to_gemfile
+      return unless bundler?
+      return if file_contains? 'Gemfile', 'rubocop'
+      append_to_file 'Gemfile', "gem 'rubocop', group: :development\n"
+      append_to_file 'Gemfile', "gem 'rubocop-rspec', group: :development\n"
+    end
+
+    def copy_rake_task
+      return unless rake?
+      return unless options[:rake_task]
+      copy_file 'ruby/rubocop.rake', 'lib/tasks/rubocop.rake'
+    end
+
+    def copy_default_configuration
+      return unless options[:defaults]
+      copy_file 'ruby/.rubocop.yml', '.rubocop_defaults.yml'
+    end
+
+    def add_project_configuration
+      return unless options[:defaults]
+      if File.exist?('.rubocop.yml')
+        if file_contains? '.rubocop.yml', 'inherit_from:'
+          say 'You should manually make sure to inherit from ".rubocop_defaults.yml" in your .rubocop.yml'
+        else
+          insert_into_file '.rubocop.yml',
+            "inherit_from: .rubocop_defaults.yml\n\n",
+            before: 'AllCops:'
+        end
+      else
+        create_file '.rubocop.yml', "---\ninherit_from: .rubocop_defaults.yml"
+      end
+    end
+
+    def report
+      say 'You should now install any new gems:'
+      if bundler?
+        say '  bundle install'
+      else
+        say '  gem install rubocop rubocop-rspec'
+      end
+      say 'Then you can run Rubocop for the first time:'
+      if rake? && options[:rake_task]
+        say '  rake rubocop'
+      elsif bundler?
+        say '  bundle exec rubocop'
+      else
+        say '  rubocop'
+      end
+    end
+  end
+
+  class Reek < Thor::Group
+    include Helpers
+
+    class_option :rake_task, default: true, type: :boolean, desc: 'Whether to create a Rake task'
+    class_option :defaults, default: true, type: :boolean, desc: 'Whether to import the default configuration'
+
+    def add_required_gems_to_gemfile
+      return unless bundler?
+      return if file_contains? 'Gemfile', 'reek'
+      append_to_file 'Gemfile', "gem 'reek', group: :development\n"
+    end
+
+    def copy_rake_task
+      return unless rake?
+      return unless options[:rake_task]
+      copy_file 'ruby/reek.rake', 'lib/tasks/reek.rake'
+    end
+
+    def copy_default_configuration
+      return unless options[:defaults]
+      copy_file 'ruby/.reek.yml', '.reek.yml'
+    end
+
+    def report
+      say 'You should now install any new gems:'
+      if bundler?
+        say '  bundle install'
+      else
+        say '  gem install reek'
+      end
+      say 'Then you can run Reek for the first time:'
+      if rake? && options[:rake_task]
+        say '  rake reek'
+      elsif bundler?
+        say '  bundle exec reek'
+      else
+        say '  reek'
+      end
+    end
+  end
+
+  class Brakeman < Thor::Group
+    include Helpers
+
+    class_option :rake_task, default: true, type: :boolean, desc: 'Whether to create a Rake task'
+    class_option :defaults, default: true, type: :boolean, desc: 'Whether to import the default configuration'
+
+    def add_required_gems_to_gemfile
+      return unless bundler?
+      return if file_contains? 'Gemfile', 'brakeman'
+      append_to_file 'Gemfile', "gem 'brakeman', group: :development\n"
+    end
+
+    def copy_rake_task
+      return unless rake?
+      return unless options[:rake_task]
+      copy_file 'ruby/brakeman.rake', 'lib/tasks/brakeman.rake'
+    end
+
+    def report
+      say 'You should now install any new gems:'
+      if bundler?
+        say '  bundle install'
+      else
+        say '  gem install brakeman'
+      end
+      say 'Then you can run Brakeman for the first time:'
+      if rake? && options[:rake_task]
+        say '  rake brakeman'
+      elsif bundler?
+        say '  bundle exec brakeman'
+      else
+        say '  brakeman'
+      end
+    end
+  end
+
+  class Coffeelint < Thor::Group
+    include Helpers
+
+    class_option :rake_task, default: true, type: :boolean, desc: 'Whether to create a Rake task'
+    class_option :defaults, default: true, type: :boolean, desc: 'Whether to import the default configuration'
+
+    def copy_rake_task
+      return unless rake?
+      return unless options[:rake_task]
+      copy_file 'coffee-script/coffeelint.rake', 'lib/tasks/coffeelint.rake'
+    end
+
+    def copy_default_configuration
+      return unless options[:defaults]
+      copy_file 'coffee-script/.coffeelint.json', '.coffeelint.json'
+    end
+
+    def report
+      say 'You should now install any new packages:'
+      if npm?
+        say '  npm install --save-dev coffeelint'
+      else
+        say '  npm install -g coffeelint'
+      end
+      say 'Then you can run Coffeelint for the first time:'
+      if rake? && options[:rake_task]
+        say '  rake coffeelint'
+      elsif npm?
+        say '  bundle exec brakeman'
+      else
+        say '  brakeman'
+      end
+    end
+  end
+
+  class BundlerAudit < Thor::Group
+    include Helpers
+
+    class_option :rake_task, default: true, type: :boolean, desc: 'Whether to create a Rake task'
+
+    def add_gem
+      return unless bundler?
+      return if file_contains? 'Gemfile', 'bundler-audit'
+      append_to_file 'Gemfile', "gem 'bundler-audit', require: false, group: :development\n"
+    end
+
+    def copy_rake_task
+      return unless rake?
+      return unless options[:rake_task]
+      copy_file 'ruby/bundler_audit.rake', 'lib/tasks/bundler_audit.rake'
+    end
+
+    def report
+      say 'You should now install any new gems:'
+      if bundler?
+        say '  bundle install'
+      else
+        say '  gem install bundler-audit'
+      end
+      say 'Then you can run bundler-audit for the first time:'
+      if rake? && options[:rake_task]
+        say '  rake bundle_audit'
+      elsif bundler?
+        say '  bundle exec bundle-audit'
+      else
+        say '  bundle-audit'
+      end
+      say 'You can ignore specific warnings by listing their IDs in a special .bundlerauditignore file in the root of your project.'
+    end
+  end
+
+  class Main < Thor
+    register Rubocop,      'rubocop',       'rubocop',       'Install Rubocop (Ruby style guide) into the current directory'
+    register Reek,         'reek',          'reek',          'Install Reek (Ruby code smells) into the current directory'
+    register Brakeman,     'brakeman',      'brakeman',      'Install Brakeman (Rails security) into the current directory'
+    register Coffeelint,   'coffeelint',    'coffeelint',    'Install Coffeelint (Coffee Script style guide) into the current directory'
+    register BundlerAudit, 'bundler_audit', 'bundler_audit', 'Install bundler-audit into the current directory'
+  end
+end
+
+Styleguide::Main.start
