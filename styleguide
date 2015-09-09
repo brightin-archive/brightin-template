@@ -240,6 +240,7 @@ module Styleguide
       else
         say '  bundle-audit'
       end
+      say 'You can ignore specific warnings by listing their IDs in a special .bundlerauditignore file in the root of your project.'
     end
   end
 
