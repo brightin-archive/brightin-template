@@ -11,5 +11,5 @@ task :bundler_audit do
     else
       []
     end
-  Bundler::Audit::CLI.start(['check'])
+  Bundler::Audit::CLI.start(['check', *ignores])
 end
