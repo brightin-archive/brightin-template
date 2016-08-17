@@ -7,12 +7,12 @@ require: rubocop-rspec
 # https://github.com/bbatsov/rubocop/blob/master/config/default.yml
 
 AllCops:
-
   # Exclude automatically generated files.
   Exclude:
     - db/schema.rb
     - bin/**/*
     - script/**/*
+  TargetRubyVersion: 2.3
 
 Rails:
   Enabled: true
