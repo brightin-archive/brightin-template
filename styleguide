@@ -234,7 +234,7 @@ module Styleguide
       end
       say 'Then you can run bundler-audit for the first time:'
       if rake? && options[:rake_task]
-        say '  rake bundle_audit'
+        say '  rake bundler_audit'
       elsif bundler?
         say '  bundle exec bundle-audit'
       else
