@@ -101,6 +101,14 @@ Style/IfUnlessModifier:
   Exclude:
     - 'config/initializers/*'
 
+# Prefer indented multiline style (less maintenance hassle).
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+# Prefer indented multiline style (less maintenance hassle).
+Style/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
 # Ensure indented style is used for multiline operations, not aligned style.
 Style/MultilineOperationIndentation:
   EnforcedStyle: indented
