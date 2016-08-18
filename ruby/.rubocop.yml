@@ -7,16 +7,15 @@ require: rubocop-rspec
 # https://github.com/bbatsov/rubocop/blob/master/config/default.yml
 
 AllCops:
-
   # Exclude automatically generated files.
   Exclude:
     - db/schema.rb
     - bin/**/*
     - script/**/*
+  TargetRubyVersion: 2.3
 
-  # Run Rails-specific cops. Remove this line if you want to use Rubocop in a
-  # non-Rails project.
-  RunRailsCops: true
+Rails:
+  Enabled: true
 
 Style/CollectionMethods:
   # Mapping from undesired method to desired_method
@@ -101,6 +100,14 @@ Style/BlockDelimiters:
 Style/IfUnlessModifier:
   Exclude:
     - 'config/initializers/*'
+
+# Prefer indented multiline style (less maintenance hassle).
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+# Prefer indented multiline style (less maintenance hassle).
+Style/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
 
 # Ensure indented style is used for multiline operations, not aligned style.
 Style/MultilineOperationIndentation:
