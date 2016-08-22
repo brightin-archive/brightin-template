@@ -270,7 +270,7 @@ module Styleguide
         prepend_to_file filename, "# Configure SimpleCov in <root>/.simplecov\nrequire 'simplecov' unless ENV['SKIP_COVERAGE']\n"
       else
         prepend_to_file filename, <<-EOS
-unless ENV['DISABLE_COVERAGE']
+unless ENV['SKIP_COVERAGE']
   require 'simplecov'
   SimpleCov.start 'rails'
 end
