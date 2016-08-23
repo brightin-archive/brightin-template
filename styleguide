@@ -279,6 +279,13 @@ end
       end
     end
 
+    def inject_into_gitignore
+      filename = '.gitignore'
+      return unless File.exist?(filename)
+      return if file_contains?(filename, 'coverage')
+      append_to_file filename, "coverage\n"
+    end
+
     def report
       say 'You should now install any new gems:'
       if bundler?
