@@ -244,12 +244,70 @@ module Styleguide
     end
   end
 
+  class Simplecov < Thor::Group
+    include Helpers
+
+    class_option :defaults, default: true, type: :boolean, desc: 'Whether to import the default configuration'
+
+    def add_gem
+      return unless bundler?
+      return if file_contains? 'Gemfile', 'simplecov'
+      append_to_file 'Gemfile', "gem 'simplecov', require: false, group: :test\n"
+    end
+
+    def copy_default_configuration
+      return unless options[:defaults]
+      return if File.exist?('.simplecov')
+      copy_file 'ruby/.simplecov', '.simplecov'
+    end
+
+    def inject_into_test_helper
+      filename = 'spec/spec_helper.rb'
+      filename = 'test/test_helper.rb' unless File.exist?(filename)
+      return unless File.exist?(filename)
+      return if file_contains? filename, 'SimpleCov'
+      if options[:defaults]
+        prepend_to_file filename, "# Configure SimpleCov in <root>/.simplecov\nrequire 'simplecov' unless ENV['SKIP_COVERAGE']\n"
+      else
+        prepend_to_file filename, <<-EOS
+unless ENV['SKIP_COVERAGE']
+  require 'simplecov'
+  SimpleCov.start 'rails'
+end
+
+        EOS
+      end
+    end
+
+    def inject_into_gitignore
+      filename = '.gitignore'
+      return unless File.exist?(filename)
+      return if file_contains?(filename, 'coverage')
+      append_to_file filename, "coverage\n"
+    end
+
+    def report
+      say 'You should now install any new gems:'
+      if bundler?
+        say '  bundle install'
+      else
+        say '  gem install simplecov'
+      end
+      say 'Then, run your tests to generate coverage reports.'
+      say 'You can skip coverage reports using the SKIP_COVERAGE env var.'
+      unless options[:defaults]
+        say 'You can customise SimpleCov settings in the .simplecov file.'
+      end
+    end
+  end
+
   class Main < Thor
     register Rubocop,      'rubocop',       'rubocop',       'Install Rubocop (Ruby style guide) into the current directory'
     register Reek,         'reek',          'reek',          'Install Reek (Ruby code smells) into the current directory'
     register Brakeman,     'brakeman',      'brakeman',      'Install Brakeman (Rails security) into the current directory'
     register Coffeelint,   'coffeelint',    'coffeelint',    'Install Coffeelint (Coffee Script style guide) into the current directory'
     register BundlerAudit, 'bundler_audit', 'bundler_audit', 'Install bundler-audit into the current directory'
+    register Simplecov,    'simplecov',     'simplecov',     'Install SimpleCov (Ruby code coverage tool) into the current directory'
   end
 end
 
