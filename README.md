@@ -1,8 +1,8 @@
-# Brightin style guide
+# brightin-template
 
 This repository contains configuration files and installation instructions for
-including common linting tools in projects. Copy these into your projects and
-use pull requests to propose changes to defaults.
+including common linting and analysis tools in projects. Copy these into your
+projects and use pull requests to propose changes to defaults.
 
 Do you disagree with anything in this repo? Want to discuss something? Open an
 issue or submit a pull request!
@@ -25,6 +25,7 @@ tests your code using these tools, and whatever else you can automate.
     - Reek
     - Brakeman
     - bundler-audit
+    - SimpleCov
 * Coffee script
     - coffeelint
 * Git
@@ -38,7 +39,7 @@ You can copy files to your own liking, or use the generator script provided to
 copy relevant files to your project directory. Clone this repo and run the
 generator to see available options:
 
-    /path/to/styleguide/styleguide -h
+    /path/to/brightin-template/brightin-template -h
 
 ## Wish list
 

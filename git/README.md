@@ -1,4 +1,4 @@
-# Brightin style guide
+# brightin-template
 
 ## Git hooks
 
