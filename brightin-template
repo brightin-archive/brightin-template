@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 #
-# Thor generator for installing styleguide scripts and configurations into
-# a project directory. A recent-enough version of Bundler is required for
+# Thor generator for installing Brightin template scripts and configurations
+# into a project directory. A recent-enough version of Bundler is required for
 # the inline Gemfile to work correctly.
 
 require 'bundler/inline'
@@ -10,7 +10,7 @@ gemfile do
   gem 'thor'
 end
 
-module Styleguide
+module BrightinTemplate
   module Helpers
     def self.included(base)
       super
@@ -311,4 +311,4 @@ end
   end
 end
 
-Styleguide::Main.start
+BrightinTemplate::Main.start
