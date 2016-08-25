@@ -177,6 +177,7 @@ module BrightinTemplate
     include Helpers
 
     class_option :rake_task, default: true, type: :boolean, desc: 'Whether to create a Rake task'
+    class_option :install, default: true, type: :boolean, desc: 'Whether to install required packages with NPM'
     class_option :defaults, default: true, type: :boolean, desc: 'Whether to import the default configuration'
 
     def copy_rake_task
@@ -185,19 +186,21 @@ module BrightinTemplate
       copy_file 'coffee-script/coffeelint.rake', 'lib/tasks/coffeelint.rake'
     end
 
+    def install_npm_package
+      if npm? && options[:install]
+        system 'npm install --save-dev coffeelint'
+      else
+        say "You should install coffeelint globally:\n\n  npm install -g coffeelint"
+      end
+    end
+
     def copy_default_configuration
       return unless options[:defaults]
       copy_file 'coffee-script/.coffeelint.json', '.coffeelint.json'
     end
 
     def report
-      say 'You should now install any new packages:'
-      if npm?
-        say '  npm install --save-dev coffeelint'
-      else
-        say '  npm install -g coffeelint'
-      end
-      say 'Then you can run Coffeelint for the first time:'
+      say 'You can now run Coffeelint for the first time:'
       if rake? && options[:rake_task]
         say '  rake coffeelint'
       elsif npm?
@@ -301,6 +304,65 @@ end
     end
   end
 
+  class Eslint < Thor::Group
+    include Helpers
+
+    class_option :defaults, default: true, type: :boolean, desc: 'Whether to import the default configuration'
+    class_option :install, default: true, type: :boolean, desc: 'Whether to install required packages with NPM'
+    class_option :npm_task, default: true, type: :boolean, desc: 'Whether to create a new NPM run task for eslint'
+    class_option :rake_task, default: true, type: :boolean, desc: 'Whether to create a new Rake task for eslint'
+
+    def install_npm_package
+      if npm? && options[:install]
+        system "npm install --save-dev eslint"
+      else
+        say "You should install eslint globally:\n\n  npm install -g eslint"
+      end
+    end
+
+    def add_lint_npm_task
+      return unless create_npm_task?
+      require 'json'
+      package_json = JSON.parse(File.read('package.json'))
+      package_json['scripts'] ||= {}
+      package_json['scripts']['lint'] ||= 'eslint app/assets/javascripts spec/javascripts'
+      File.open('package.json', 'w') do |f|
+        f.write JSON.pretty_generate(package_json)
+      end
+    end
+
+    def add_lint_rake_task
+      return unless create_rake_task?
+      copy_file 'javascript/eslint.rake', 'lib/tasks/eslint.rake'
+    end
+
+    def copy_defaults
+      return unless options[:defaults]
+      copy_file 'javascript/.eslintrc.json', '.eslintrc.json'
+    end
+
+    def report
+      say 'You can lint your javascript files as follows:'
+      say ''
+      say 'With Rake: rake eslint' if create_npm_task?
+      say 'With NPM: npm run lint' if create_rake_task?
+      say 'Using eslint itself: eslint /path/to/files'
+      unless options[:defaults]
+        say 'You can customise linting settings in the .eslintrc.json file.'
+      end
+    end
+
+    private
+
+    def create_npm_task?
+      npm? && options[:npm_task]
+    end
+
+    def create_rake_task?
+      create_npm_task? && rake? && options[:rake_task]
+    end
+  end
+
   class Main < Thor
     register Rubocop,      'rubocop',       'rubocop',       'Install Rubocop (Ruby style guide) into the current directory'
     register Reek,         'reek',          'reek',          'Install Reek (Ruby code smells) into the current directory'
@@ -308,6 +370,7 @@ end
     register Coffeelint,   'coffeelint',    'coffeelint',    'Install Coffeelint (Coffee Script style guide) into the current directory'
     register BundlerAudit, 'bundler_audit', 'bundler_audit', 'Install bundler-audit into the current directory'
     register Simplecov,    'simplecov',     'simplecov',     'Install SimpleCov (Ruby code coverage tool) into the current directory'
+    register Eslint,       'eslint',        'eslint',        'Install Eslint (Javascript linting tool) into the current directory'
   end
 end
 
