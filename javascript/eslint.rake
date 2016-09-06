@@ -1,4 +1,4 @@
-desc 'Use `npm lint` to lint JavaScript code'
+desc 'Use `npm run lint` to lint JavaScript code'
 task :eslint do
-  sh 'npm lint'
+  sh 'npm run lint'
 end
