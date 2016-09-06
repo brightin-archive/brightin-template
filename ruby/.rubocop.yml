@@ -12,6 +12,7 @@ AllCops:
     - db/schema.rb
     - bin/**/*
     - script/**/*
+    - vendor/**/*
   TargetRubyVersion: 2.3
 
 Style/FrozenStringLiteralComment:
