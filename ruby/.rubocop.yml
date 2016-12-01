@@ -67,6 +67,8 @@ Style/Documentation:
     - app/controllers/**/*
     - app/serializers/**/*
     - app/helpers/application_helper.rb
+    - app/mailers/application_mailer.rb
+    - app/models/application_model.rb
     - config/application.rb
     - spec/**/*_spec.rb
     - test/**/*_test.rb
