@@ -26,7 +26,9 @@ tests your code using these tools, and whatever else you can automate.
     - Brakeman
     - bundler-audit
     - SimpleCov
-* Coffee script
+* JavaScript
+    - eslint
+* CoffeeScript
     - coffeelint
 * Git
     - pre-commit hooks
