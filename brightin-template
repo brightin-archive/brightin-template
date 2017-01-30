@@ -363,12 +363,38 @@ end
     end
   end
 
+  class FactoryGirlLint < Thor::Group
+    include Helpers
+
+    def add_gem
+      return unless bundler?
+      return if file_contains? 'Gemfile', 'factory_girl_rails'
+      append_to_file 'Gemfile', "gem 'factory_girl_rails', group: [:development, :test]\n"
+    end
+
+    def copy_rake_task
+      copy_file 'ruby/factory_girl.rake', 'lib/tasks/factory_girl.rake'
+    end
+
+    def report
+      say 'You should now install any new gems:'
+      if bundler?
+        say '  bundle install'
+      else
+        say '  gem install factory_girl_rails'
+      end
+      say 'Then you can run factory girl lint for the first time:'
+      say '  rake factory_girl:lint'
+    end
+  end
+
   class Main < Thor
     register Rubocop,      'rubocop',       'rubocop',       'Install Rubocop (Ruby style guide) into the current directory'
     register Reek,         'reek',          'reek',          'Install Reek (Ruby code smells) into the current directory'
     register Brakeman,     'brakeman',      'brakeman',      'Install Brakeman (Rails security) into the current directory'
     register Coffeelint,   'coffeelint',    'coffeelint',    'Install Coffeelint (Coffee Script style guide) into the current directory'
     register BundlerAudit, 'bundler_audit', 'bundler_audit', 'Install bundler-audit into the current directory'
+    register FactoryGirlLint, 'factory_girl_lint', 'factory_girl_lint', 'Add rake task for factory girl lint and install factory_girl_rails'
     register Simplecov,    'simplecov',     'simplecov',     'Install SimpleCov (Ruby code coverage tool) into the current directory'
     register Eslint,       'eslint',        'eslint',        'Install Eslint (Javascript linting tool) into the current directory'
   end
