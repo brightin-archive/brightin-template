@@ -4,7 +4,7 @@ task :bundler_audit do
   require 'bundler/audit/cli'
   Bundler::Audit::CLI.start(['update'])
   ignores =
-    if File.exist?('bundlerauditignore')
+    if File.exist?('.bundlerauditignore')
       File.readlines('.bundlerauditignore').flat_map do |line|
         ['--ignore', line.chomp]
       end
