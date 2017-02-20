@@ -388,6 +388,20 @@ end
     end
   end
 
+  class Rollbar < Thor::Group
+    # Command that installs a default rollbar initializer.
+    include Helpers
+
+    def create_initializer
+      copy_file 'ruby/rollbar.rb', 'config/initializers/rollbar.rb'
+    end
+
+    def env_hint
+      return if ENV.fetch('ROLLBAR_ACCESS_TOKEN', nil)
+      say 'Set the ROLLBAR_ACCESS_TOKEN environment variable to use Rollbar.'
+    end
+  end
+
   class Main < Thor
     register Rubocop,      'rubocop',       'rubocop',       'Install Rubocop (Ruby style guide) into the current directory'
     register Reek,         'reek',          'reek',          'Install Reek (Ruby code smells) into the current directory'
@@ -397,6 +411,7 @@ end
     register FactoryGirlLint, 'factory_girl_lint', 'factory_girl_lint', 'Add rake task for factory girl lint and install factory_girl_rails'
     register Simplecov,    'simplecov',     'simplecov',     'Install SimpleCov (Ruby code coverage tool) into the current directory'
     register Eslint,       'eslint',        'eslint',        'Install Eslint (Javascript linting tool) into the current directory'
+    register Rollbar,       'rollbar',        'rollbar',        'Install Rollbar configuration for error handling'
   end
 end
 
