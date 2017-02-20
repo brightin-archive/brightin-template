@@ -26,6 +26,7 @@ tests your code using these tools, and whatever else you can automate.
     - Brakeman
     - bundler-audit
     - SimpleCov
+    - Rollbar
 * JavaScript
     - eslint
 * CoffeeScript
