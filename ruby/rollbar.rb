@@ -1,7 +1,7 @@
 Rollbar.configure do |config|
-  config.access_token = ENV['ROLLBAR_ACCESS_TOKEN']
+  config.access_token = ENV.fetch('ROLLBAR_ACCESS_TOKEN', nil)
   config.enabled = false if %w(development test).include?(Rails.env)
-  config.environment = ENV['ROLLBAR_ENV'] || Rails.env
+  config.environment = ENV.fetch('ROLLBAR_ENV', Rails.env)
   config.exception_level_filters.merge!(
     'ActiveRecord::RecordNotFound' => 'ignore',
     'ActionController::RoutingError' => 'ignore',
