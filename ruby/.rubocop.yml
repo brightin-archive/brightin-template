@@ -108,15 +108,15 @@ Style/IfUnlessModifier:
     - 'config/initializers/*'
 
 # Prefer indented multiline style (less maintenance hassle).
-Style/AlignParameters:
+Layout/AlignParameters:
   EnforcedStyle: with_fixed_indentation
 
 # Prefer indented multiline style (less maintenance hassle).
-Style/MultilineMethodCallIndentation:
+Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
 # Ensure indented style is used for multiline operations, not aligned style.
-Style/MultilineOperationIndentation:
+Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 
 # The top-level `describe` call should reference a class or module that is
