@@ -10,9 +10,9 @@ issue or submit a pull request!
 ## Purpose
 
 Static analysis to catch common errors and enforce consistentcy can both make
-your more productive and improve shared ownership of your codebase. This
+you more productive and improves shared ownership of your codebase. This
 repository contains instructions on how to add various tools to your projects
-and hit the ground running with sensible (but opinionatd) default
+and hit the ground running with sensible (but opinionated) default
 configurations.
 
 For maximum benefit, set up a continuous integration workflow that automatically
